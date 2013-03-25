@@ -318,23 +318,20 @@ class Backend(object):
         else:
             text = text[len(BOT_PREFIX):]
 
-        text_split = text.strip().split(' ')
+        command, *lines = text.splitlines()
+        command_split = command.split()
         cmd = None
-        command = None
         args = ''
-        if len(text_split) > 1:
-            command = (text_split[0] + '_' + text_split[1]).lower()
-            if command in self.commands:
-                cmd = command
-                args = ' '.join(text_split[2:])
 
-        if not cmd:
-            command = text_split[0].lower()
-            args = ' '.join(text_split[1:])
+        for test_compound in range(1, len(command_split)+1):
+            command = '_'.join(command_split[0:test_compound]).lower()
             if command in self.commands:
                 cmd = command
-                if len(text_split) > 1:
-                    args = ' '.join(text_split[1:])
+                if test_compound < len(command_split):
+                    args = ' '.join(command_split[test_compound:]) + '\n'
+        
+        if lines and len(lines) > 0:
+            args = args + '\n'.join(lines)
 
         if command == BOT_PREFIX:  # we did "!!" so recall the last command
             if len(user_cmd_history):
