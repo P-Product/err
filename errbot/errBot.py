@@ -427,7 +427,7 @@ class ErrBot(Backend, StoreMixin):
             for clazz in sorted(clazz_commands, key=lambda clazz: clazz.__name__):
                 usage += '\n\n%s: %s\n' % (clazz.__name__, clazz.__errdoc__ or '')
                 usage += '\n'.join(sorted([
-                '\t' + self.prefix + '%s: %s' % (name.replace('_', ' ', 1),
+                '\t' + self.prefix + '%s: %s' % (name.replace('_', ' '),
                                                  (self.get_doc(command).strip()).split('\n', 1)[0])
                 for (name, command) in clazz_commands[clazz] 
                     if name != 'help' 
@@ -440,7 +440,7 @@ class ErrBot(Backend, StoreMixin):
             commands = [(name, command) for (name, command) in self.commands.items() if get_class_that_defined_method(command).__name__ == args]
             description = 'Available commands for %s:\n\n' % args
             usage += '\n'.join(sorted([
-            '\t' + self.prefix + '%s: %s' % (name.replace('_', ' ', 1),
+            '\t' + self.prefix + '%s: %s' % (name.replace('_', ' '),
                                              (self.get_doc(command).strip()).split('\n', 1)[0])
             for (name, command) in commands 
                 if not command._err_command_hidden  
