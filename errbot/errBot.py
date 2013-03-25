@@ -424,7 +424,7 @@ class ErrBot(Backend, StoreMixin):
                     commands.append((name, command))
                     clazz_commands[clazz] = commands
 
-            for clazz in sorted(clazz_commands):
+            for clazz in sorted(clazz_commands, key=lambda clazz: clazz.__name__):
                 usage += '\n\n%s: %s\n' % (clazz.__name__, clazz.__errdoc__ or '')
                 usage += '\n'.join(sorted([
                 '\t' + self.prefix + '%s: %s' % (name.replace('_', ' ', 1),
@@ -494,7 +494,7 @@ class ErrBot(Backend, StoreMixin):
                 clazz_commands[clazz] = commands
 
         usage = ''
-        for clazz in sorted(clazz_commands):
+        for clazz in sorted(clazz_commands, key = lambda clazz: clazz.__name__):
             usage += '\n'.join(sorted([
             '\t' + self.prefix + '%s: %s' % (name.replace('_', ' ', 1), (command.__doc__ or '(undocumented)').strip().split('\n', 1)[0])
             for (name, command) in clazz_commands[clazz] if
