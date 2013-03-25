@@ -457,7 +457,7 @@ class ErrBot(Backend, StoreMixin):
     @botcmd(historize=False)
     def history(self, mess, args):
         """display the command history"""
-        answer = []
+        answer = ['Command history (!# to repeat; !! to repeat last):']
         user_cmd_history = self.cmd_history[get_sender_username(mess)]
         l = len(user_cmd_history)
         for i in range(0, l):
