@@ -328,10 +328,11 @@ class Backend(object):
             if command in self.commands:
                 cmd = command
                 if test_compound < len(command_split):
-                    args = ' '.join(command_split[test_compound:]) + '\n'
+                    args = ' '.join(command_split[test_compound:])
+                break
         
         if lines and len(lines) > 0:
-            args = args + '\n'.join(lines)
+            args = args + '\n' + '\n'.join(lines)
 
         if command == BOT_PREFIX:  # we did "!!" so recall the last command
             if len(user_cmd_history):
