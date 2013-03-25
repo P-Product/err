@@ -286,6 +286,7 @@ class Backend(object):
             return False
 
         surpress_cmd_not_found = False
+        removed_prefix = False
 
         tomatch = text.lower() if BOT_ALT_PREFIX_CASEINSENSITIVE else text
         if len(BOT_ALT_PREFIXES) > 0 and tomatch.startswith(self.bot_alt_prefixes):
@@ -307,16 +308,26 @@ class Backend(object):
                 l = len(sep)
                 if text[:l] == sep:
                     text = text[l:]
+
+            removed_prefix = True
+
         elif type == "chat" and BOT_PREFIX_OPTIONAL_ON_CHAT:
             logging.debug("Assuming '%s' to be a command because BOT_PREFIX_OPTIONAL_ON_CHAT is True" % text)
             # In order to keep noise down we surpress messages about the command
             # not being found, because it's possible a plugin will trigger on what
             # was said with trigger_message.
             surpress_cmd_not_found = True
+
+            # however the bot prefix may still be there
+            if text.startswith(BOT_PREFIX):
+                text = text[len(BOT_PREFIX):]
+                removed_prefix = True
+
         elif not text.startswith(BOT_PREFIX):
             return True
         else:
             text = text[len(BOT_PREFIX):]
+            removed_prefix = True
 
         command, *lines = text.splitlines()
         command_split = command.split()
@@ -334,12 +345,12 @@ class Backend(object):
         if lines and len(lines) > 0:
             args = args + '\n' + '\n'.join(lines)
 
-        if command == BOT_PREFIX:  # we did "!!" so recall the last command
+        if removed_prefix and command == BOT_PREFIX:  # we did "!!" so recall the last command
             if len(user_cmd_history):
                 cmd, args = user_cmd_history[-1]
             else:
                 return False  # no command in history
-        elif command.isdigit():  # we did "!#" so we recall the specified command
+        elif removed_prefix and command.isdigit():  # we did "!#" so we recall the specified command
             index = int(command)
             if len(user_cmd_history) >= index:
                 cmd, args = user_cmd_history[-index]
