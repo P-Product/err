@@ -360,7 +360,7 @@ class Backend(object):
         if (cmd, args) in user_cmd_history:
             user_cmd_history.remove((cmd, args))  # we readd it below
 
-        logging.info("received command = %s matching [%s] with parameters [%s]" % (command, cmd, args))
+        logging.info("received '%s' from %s matching [%s] with parameters [%s]" % (command, username, cmd, args))
 
         if cmd:
             def execute_and_send(template_name):
