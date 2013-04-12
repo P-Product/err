@@ -19,7 +19,7 @@ class ChatRoom(BotPlugin):
 
     connected = False
 
-    def callback_connect(self):
+    def callback_connect(self, connection):
         logging.info('Callback_connect')
         if not self.connected:
             self.connected = True

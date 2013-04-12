@@ -42,6 +42,6 @@ class VersionChecker(BotPlugin):
         except Exception as e:
             logging.exception('Could not version check')
 
-    def callback_connect(self):
+    def callback_connect(self, connection):
         if not self.connected:
             self.connected = True

@@ -166,7 +166,7 @@ class ErrBot(Backend, StoreMixin):
                 #noinspection PyBroadException
                 try:
                     logging.debug('Callback %s' % bot)
-                    bot.callback_connect()
+                    bot.callback_connect(self.connect())
                 except Exception as _:
                     logging.exception("callback_connect failed for %s" % bot)
 
@@ -317,7 +317,7 @@ class ErrBot(Backend, StoreMixin):
         if self.is_plugin_blacklisted(args):
             self.unblacklist_plugin(args)
         result = "%s / %s" % (self.deactivate_plugin(args), self.activate_plugin(args))
-        get_plugin_obj_by_name(args).callback_connect()
+        get_plugin_obj_by_name(args).callback_connect(self.connect())
         return result
 
     @botcmd(admin_only=True)

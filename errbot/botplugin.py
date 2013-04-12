@@ -148,7 +148,7 @@ class BotPlugin(BotPluginBase):
         """
         super(BotPlugin, self).deactivate()
 
-    def callback_connect(self):
+    def callback_connect(self, connection):
         """
             Override to get a notified when the bot is connected
         """
